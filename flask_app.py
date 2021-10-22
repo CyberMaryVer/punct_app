@@ -23,7 +23,7 @@ def submit():
     return f'RESULT: {res}'
 
 
-@app.route('/punct/', methods=['GET'])
+@app.route('/punct/', methods=['GET', 'POST'])
 def txt2txt():
     try:
         user_input = request.args.get("text", None)
