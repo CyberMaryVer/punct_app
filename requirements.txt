@@ -1,0 +1,13 @@
+dependency-injector==4.35.2
+# text
+torch==1.9.1
+
+# service
+Flask==2.0.1
+
+# server
+gunicorn==20.1.0
+
+# core
+numpy==1.21.1
+omegaconf==2.1.0
