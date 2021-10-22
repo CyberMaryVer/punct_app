@@ -1,1 +1,1 @@
-gunicorn -w 1 -b 0.0.0.0:5000 flask_app:app
+gunicorn -w 1 -b 0.0.0.0:8080 flask_app:app

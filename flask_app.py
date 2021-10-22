@@ -40,7 +40,7 @@ def save_log(txt):
 
 
 if __name__ == '__main__':
-    test = apply_punkt_to_text(raw_text="что это спросил он как это понимать")
+    # test = apply_punkt_to_text(raw_text="что это спросил он как это понимать")
     port = os.environ.get('PORT')
     if port:
         # 'PORT' variable exists - running on Heroku, listen on external IP and on given by Heroku port
