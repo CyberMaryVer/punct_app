@@ -1,11 +1,12 @@
 import os
 import time
 from flask import Flask, request, render_template
+from werkzeug.utils import secure_filename
 from punct import apply_punkt_to_text
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
-app.config['MAX_CONTENT_LENGTH'] = 1024
+app.config['MAX_CONTENT_LENGTH'] = 1024000
 app.secret_key = "secret key"
 
 
@@ -31,6 +32,25 @@ def txt2txt():
         return {"res": res}
     except Exception as e:
         return {"error": f"{type(e)}: {e}"}
+
+
+@app.route('/getfile', methods=['GET', 'POST'])
+def getfile():
+    if request.method == 'POST':
+
+        file = request.files['myfile']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join("logs", filename))
+
+        with open(os.path.join("logs", filename)) as f:
+            file_content = f.read()
+
+        res = apply_punkt_to_text(raw_text=file_content)
+        return res
+
+    else:
+        res = request.args['myfile']
+    return res
 
 
 def save_log(txt):
