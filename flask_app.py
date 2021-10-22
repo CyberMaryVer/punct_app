@@ -26,9 +26,9 @@ def submit():
 @app.route('/punct/', methods=['GET', 'POST'])
 def txt2txt():
     try:
-        user_input = request.args.get("text", None)
+        user_input = request.form['text']
         res = apply_punkt_to_text(raw_text=user_input)
-        return {"punct": res}
+        return {"res": res}
     except Exception as e:
         return {"error": f"{type(e)}: {e}"}
 
