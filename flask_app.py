@@ -2,9 +2,12 @@ import os
 import time
 from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
+
 from punct import apply_punkt_to_text
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 app.config['MAX_CONTENT_LENGTH'] = 1024000
 app.secret_key = "secret key"
