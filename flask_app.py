@@ -30,7 +30,8 @@ def submit():
 @app.route('/punct/', methods=['GET', 'POST'])
 def txt2txt():
     try:
-        user_input = request.form['text']
+        user_input = request.form['text'] # if request.content_type == "application/x-www-form-urlencoded" \
+            # else json.loads(request.json)['text']
         res = apply_punkt_to_text(raw_text=user_input)
         return {"res": res}
     except Exception as e:

@@ -59,7 +59,7 @@ def apply_punkt_to_text(text_file=None, raw_text=None, save=False):
             print(f"{type(e)}: {e}")
 
     text = ' '.join(enh_text)
-    text = text.replace(",,", ",").replace(" ,", ",")
+    text = text.replace(",,", ",").replace(" ,", ",").replace("!", ".")
 
     if save:
         with open("punkt.txt", "w", encoding="utf-8") as writer:

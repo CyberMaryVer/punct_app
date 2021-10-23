@@ -4,6 +4,7 @@ torch==1.9.1
 
 # service
 Flask==2.0.1
+flask-cors-3.0.10
 
 # server
 gunicorn==20.1.0

@@ -5,9 +5,13 @@ NEXT_SENTENCE_START = [
     "на самом", "добрый день", "меня зовут", "то есть", "вот например", "это еще", "ну конечно", "тем более",
     "ну например", "потому что"
 ]
+EXCLUSIONS = [
+    "которых", "которым", "которые", "которой", "которого", "которому", "которая", "который"
+]
 
 
 def _merge_txt(txt_file=None, data=None):
+    """Splits a sentence with length over 1000 chars into smaller sentences"""
     rows_to_merge = []
     if txt_file is not None:
         with open(txt_file, "r", encoding="utf-8") as reader:
@@ -36,7 +40,7 @@ def _merge_txt(txt_file=None, data=None):
             if next_word in ["но", "а"]:
                 sep = "."
             elif next_word + " " + next_next_word in NEXT_SENTENCE_START or \
-                    next_word in ["я", "это", "например", "вот"]:
+                    (next_word in ["я", "это", "например", "вот"] and row.split()[-1] not in EXCLUSIONS):
                 # print(data[idx + 1])
                 sep = "."
             else:
