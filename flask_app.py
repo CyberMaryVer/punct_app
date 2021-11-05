@@ -1,10 +1,12 @@
 import os
 import time
+import json
 from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 
 from punct import apply_punkt_to_text
+from postprocess_txt import get_time_steps
 
 app = Flask(__name__)
 CORS(app)
@@ -34,6 +36,20 @@ def txt2txt():
             # else json.loads(request.json)['text']
         res = apply_punkt_to_text(raw_text=user_input)
         return {"res": res}
+    except Exception as e:
+        return {"error": f"{type(e)}: {e}"}
+
+
+@app.route('/subtitles/', methods=['GET', 'POST'])
+def subtitles():
+    try:
+        user_input = request.form['time_steps'] if request.content_type == "application/x-www-form-urlencoded" \
+            else json.loads(request.json)['time_steps']
+        user_input = json.loads(user_input)
+        raw_text = ' '.join([item['word'] for item in user_input])
+        res = apply_punkt_to_text(raw_text=raw_text)
+        subs = get_time_steps(res, user_input)
+        return {"res": res, "subs": subs}
     except Exception as e:
         return {"error": f"{type(e)}: {e}"}
 

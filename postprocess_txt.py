@@ -80,6 +80,31 @@ def _merge_txt(txt_file=None, data=None):
     return merged
 
 
+def get_time_steps(merged_text, time_steps):
+    end = [0, ]
+    merged_text = merged_text.split(".")
+    subtitles = []
+    for row in merged_text:
+        row_time = []
+        for word in row.split():
+            word_time = {}
+            for idx, item in enumerate(time_steps):
+                if item['word'] == word.strip().lower() and end[-1] < item['start_time']:
+                    end.append(item['end_time'])
+                    word_time["start"] = item['start_time']
+                    word_time["end"] = item['end_time']
+                    row_time.append(word_time)
+                    break
+        try:
+            # print(f"{row[:10]} {row_time[0]['start']:.2f}, {row[-10:]} {row_time[-1]['end']:.2f}")
+            subtitles.append({"sentence": row,
+                              "start": row_time[0]['start'],
+                              "end": row_time[-1]['end']})
+        except IndexError:
+            # print("end")
+            pass
+    return subtitles
+
+
 if __name__ == "__main__":
-    test = "что это спросил он м как это понимать"
-    print(_merge_txt(data=test))
+    pass
