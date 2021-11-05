@@ -8,6 +8,7 @@ NEXT_SENTENCE_START = [
 EXCLUSIONS = [
     "которых", "которым", "которые", "которой", "которого", "которому", "которая", "который"
 ]
+LETTERS_TO_FILTER = "бгдеёжзйлмнпртфхцчщьыъэю"
 
 
 def _merge_txt(txt_file=None, data=None):
@@ -27,7 +28,7 @@ def _merge_txt(txt_file=None, data=None):
             if idx % 500 == 0:
                 data.append(sent)
                 sent = ""
-            elif idx == len(words)-1:
+            elif idx == len(words) - 1:
                 data.append(sent)
     elif data is not None:
         data = [data, ]
@@ -62,14 +63,23 @@ def _merge_txt(txt_file=None, data=None):
             # sts = len(row.split("."))
             # print(f"total number of sentences: {sts} for {row[:100]}...")
             for sent in row.split("."):
-
                 rows_with_punkt.append(sent + ".")
         else:
 
             rows_with_punkt.append(row)
 
-    # print(f"{len(rows_with_punkt)} sentences")
-    # print([len(r) for r in rows_with_punkt])
-    merged = " ".join(rows_with_punkt)
+    rows_filtered = []
+    for row in rows_with_punkt:
+        for letter in LETTERS_TO_FILTER:
+            _letter = f" {letter} "
+            row = row.replace(_letter, " ")
+        rows_filtered.append(row)
+
+    merged = " ".join(rows_filtered)
 
     return merged
+
+
+if __name__ == "__main__":
+    test = "что это спросил он м как это понимать"
+    print(_merge_txt(data=test))

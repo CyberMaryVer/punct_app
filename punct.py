@@ -77,5 +77,5 @@ def _weights_path(local_path: str) -> str:
 
 
 if __name__ == "__main__":
-    test = apply_punkt_to_text(raw_text="что это спросил он как это понимать")
+    test = apply_punkt_to_text(raw_text="что это спросил он м как это понимать")
     print(test)
