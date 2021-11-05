@@ -7,6 +7,7 @@ from flask_cors import CORS
 
 from punct import apply_punkt_to_text
 from postprocess_txt import get_time_steps
+from spacy_formatter import format_subs
 
 app = Flask(__name__)
 CORS(app)
@@ -29,11 +30,26 @@ def submit():
     return f'RESULT: {res}'
 
 
+@app.route('/submit2', methods=['POST'])
+def submit2():
+    user_input = request.form['time_steps']
+    user_input = user_input.replace("\'", "\"")
+    user_input = json.loads(user_input)
+    raw_text = ' '.join([item['word'] for item in user_input])
+    res = apply_punkt_to_text(raw_text=raw_text)
+    subs = get_time_steps(res, user_input)
+    subs_html = format_subs(subs)
+    save_template(subs_html)
+    save_log(f'SUBTITLES: {subs}')
+
+    return render_template('subs.html')
+
+
 @app.route('/punct/', methods=['GET', 'POST'])
 def txt2txt():
     try:
-        user_input = request.form['text'] # if request.content_type == "application/x-www-form-urlencoded" \
-            # else json.loads(request.json)['text']
+        user_input = request.form['text']  # if request.content_type == "application/x-www-form-urlencoded" \
+        # else json.loads(request.json)['text']
         res = apply_punkt_to_text(raw_text=user_input)
         return {"res": res}
     except Exception as e:
@@ -77,6 +93,11 @@ def save_log(txt):
     timestamp = time.strftime('%Y-%m-%d %H-%M-%S')
     with open(f"./logs/log-{timestamp}.txt", "w", encoding="utf-8") as writer:
         writer.write(txt)
+
+
+def save_template(html, file_name='subs.html'):
+    with open(f"./templates/{file_name}", "w", encoding="utf-8") as writer:
+        writer.write(html)
 
 
 if __name__ == '__main__':

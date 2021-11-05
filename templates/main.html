@@ -5,3 +5,13 @@
     <textarea name="text" style="margin: 0px; width: 777px; height: 111px;"></textarea>
     <input type="submit">
 </form>
+
+<h2>Input time steps to process</h2>
+<span style="color: rgb(104,34,34); padding: 0.45em 0.6em; margin: 0px 0.25em; line-height: '
+                f'1; border-radius: 0.35em; font-size: 8px">
+    Format:
+    [{'word': 'да', 'start_time': 128.07715430861722, 'end_time': 128.1372745490982}, ]</span>
+<form action="{{ url_for('submit2') }}" method="post">
+    <textarea name="time_steps" style="margin: 0px; width: 777px; height: 111px;"></textarea>
+    <input type="submit">
+</form>
