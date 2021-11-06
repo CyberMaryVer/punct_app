@@ -65,7 +65,8 @@ def subtitles():
         raw_text = ' '.join([item['word'] for item in user_input])
         res = apply_punkt_to_text(raw_text=raw_text)
         subs = get_time_steps(res, user_input)
-        return {"res": res, "subs": subs}
+        html = format_subs(subs)
+        return {"res": res, "subs": subs, "html": html}
     except Exception as e:
         return {"error": f"{type(e)}: {e}"}
 
